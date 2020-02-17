@@ -3,6 +3,6 @@
 
 </head>
 <body>
-Hello World
+<a href="/new-user">Create a new account</a>
 </body>
 </html>
