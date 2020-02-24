@@ -2,17 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Create New User</title>
+    <title>Login using your credentials</title>
 </head>
 <body>
-<h2>Create a new Login account</h2>
-<form action="/new-user" method="post">
+<h2>Login to access site</h2>
+<form action="/login" method="post">
     <label for="username">User Name:</label><input type="text" name="username" id="username"><br>
     <label for="password">Password:</label><input type="password" name="password" id="password">
     <input type="submit" value="Submit">
 </form>
-<% if (request.getSession().getAttribute("UsernameAlreadyTaken") != null) {%>
-<p style="color:red">that username is already taken, try a different one.</p>
-<%}%>
+<br>
+<a href="/new-user">Create a new account</a>
 </body>
 </html>
