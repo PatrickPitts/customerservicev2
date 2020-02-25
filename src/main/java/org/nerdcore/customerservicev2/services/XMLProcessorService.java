@@ -10,7 +10,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -20,6 +19,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -33,17 +33,53 @@ public class XMLProcessorService {
     private static String usersFileName = "src/main/resources/static/users.xml";
     private static String flightsFileName = "src/main/resources/static/flights.xml";
 
-    public static void main(String[] args){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        Calendar c = new GregorianCalendar(2020, Calendar.FEBRUARY,29,9,30);
-        System.out.println(sdf.format(c.getTime()));
-//        writeNewFlight(new FlightModel("Seattle",
-//                "WA", "SEA", new Date("3/3/2020"), ));
+    public static void main(String[] args) {
+
     }
 
-    public static void writeNewFlight(FlightModel flightModel){
+    public static ArrayList<FlightModel> getFlights(){
+
+        ArrayList<FlightModel> flights = new ArrayList<>();
 
         try{
+            DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document doc = db.parse(new File(flightsFileName));
+            doc.getDocumentElement().normalize();
+            NodeList nodeList = doc.getElementsByTagName("flight");
+
+            for(int i = 0; i < nodeList.getLength(); i++){
+
+                Node flightNode = nodeList.item(i);
+                flightNode.normalize();
+
+                Node arrivalNode = flightNode.getChildNodes().item(1);
+                Node departureNode = flightNode.getChildNodes().item(3);
+                Node seatsNode = flightNode.getChildNodes().item(5);
+
+                flights.add(new FlightModel(
+                        ((Element)departureNode).getElementsByTagName("city").item(0).getTextContent(),
+                        ((Element)departureNode).getElementsByTagName("state").item(0).getTextContent(),
+                        ((Element)departureNode).getElementsByTagName("airportCode").item(0).getTextContent(),
+                        ((Element)departureNode).getElementsByTagName("datetime").item(0).getTextContent(),
+                        ((Element)arrivalNode).getElementsByTagName("city").item(0).getTextContent(),
+                        ((Element)arrivalNode).getElementsByTagName("state").item(0).getTextContent(),
+                        ((Element)arrivalNode).getElementsByTagName("airportCode").item(0).getTextContent(),
+                        ((Element)arrivalNode).getElementsByTagName("datetime").item(0).getTextContent(),
+                        Integer.parseInt(((Element)seatsNode).getElementsByTagName("firstClass").item(0).getTextContent()),
+                        Integer.parseInt(((Element)seatsNode).getElementsByTagName("businessClass").item(0).getTextContent())
+
+                        ));
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return flights;
+    }
+
+    public static void writeNewFlight(FlightModel flightModel) {
+
+        try {
             DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document doc = db.parse(flightsFileName);
             doc.getDocumentElement().normalize();
@@ -52,20 +88,49 @@ public class XMLProcessorService {
             Element newFlightElement = doc.createElement("flight");
             Element newArrivalElement = doc.createElement("arrival");
             Element newDepartureElement = doc.createElement("departure");
-            Element newSeatsElement = doc.createElement("available-seats");
+            Element newSeatsElement = doc.createElement("seats");
 
-            newArrivalElement.appendChild(doc.createElement("arrival-airport-code").appendChild(doc.createTextNode(flightModel.getArrivalAirportCode())));
-            newArrivalElement.appendChild(doc.createElement("arrival-city").appendChild(doc.createTextNode(flightModel.getArrivalCity())));
-            newArrivalElement.appendChild(doc.createElement("arrival-state").appendChild(doc.createTextNode(flightModel.getArrivalCity())));
-            newArrivalElement.appendChild(doc.createElement("arrival-date").appendChild(doc.createTextNode(flightModel.getArrivalDate().toString())));
+            Element e;
 
-            newDepartureElement.appendChild(doc.createElement("departure-airport-code").appendChild(doc.createTextNode(flightModel.getDepartureAirportCode())));
-            newDepartureElement.appendChild(doc.createElement("departure-city").appendChild(doc.createTextNode(flightModel.getDepartureCity())));
-            newDepartureElement.appendChild(doc.createElement("departure-state").appendChild(doc.createTextNode(flightModel.getDepartureState())));
-            newDepartureElement.appendChild(doc.createElement("departure-date").appendChild(doc.createTextNode(flightModel.getDepartureDate().toString())));
+            e = doc.createElement("airportCode");
+            e.appendChild(doc.createTextNode(flightModel.getArrivalAirportCode()));
+            newArrivalElement.appendChild(e);
 
-            newSeatsElement.appendChild(doc.createElement("first-class").appendChild(doc.createTextNode(Integer.toString(flightModel.getNumFirstClass()))));
-            newSeatsElement.appendChild(doc.createElement("business-class").appendChild(doc.createTextNode(Integer.toString(flightModel.getNumBusinessClass()))));
+            e = doc.createElement("city");
+            e.appendChild(doc.createTextNode(flightModel.getArrivalCity()));
+            newArrivalElement.appendChild(e);
+
+            e = doc.createElement("state");
+            e.appendChild(doc.createTextNode(flightModel.getArrivalState()));
+            newArrivalElement.appendChild(e);
+
+            e = doc.createElement("datetime");
+            e.appendChild(doc.createTextNode(flightModel.getArrivalDate()));
+            newArrivalElement.appendChild(e);
+
+            e = doc.createElement("airportCode");
+            e.appendChild(doc.createTextNode(flightModel.getDepartureAirportCode()));
+            newDepartureElement.appendChild(e);
+
+            e = doc.createElement("city");
+            e.appendChild(doc.createTextNode(flightModel.getDepartureCity()));
+            newDepartureElement.appendChild(e);
+
+            e = doc.createElement("state");
+            e.appendChild(doc.createTextNode(flightModel.getDepartureState()));
+            newDepartureElement.appendChild(e);
+
+            e = doc.createElement("datetime");
+            e.appendChild(doc.createTextNode(flightModel.getDepartureDate()));
+            newDepartureElement.appendChild(e);
+
+            e = doc.createElement("firstClass");
+            e.appendChild(doc.createTextNode(Integer.toString(flightModel.getNumFirstClass())));
+            newSeatsElement.appendChild(e);
+
+            e = doc.createElement("businessClass");
+            e.appendChild(doc.createTextNode(Integer.toString(flightModel.getNumBusinessClass())));
+            newSeatsElement.appendChild(e);
 
             newFlightElement.appendChild(newArrivalElement);
             newFlightElement.appendChild(newDepartureElement);
@@ -79,17 +144,14 @@ public class XMLProcessorService {
             t.transform(source, new StreamResult(flightsFileName));
 
 
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
 
-
-
-
     //Reads all user credential information from the users.xml data store, and returns it as an ArrayList<UserModel> object
-    public static ArrayList<UserModel> getUsers(){
+    public static ArrayList<UserModel> getUsers() {
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         ArrayList<UserModel> users = new ArrayList<>();
@@ -99,13 +161,14 @@ public class XMLProcessorService {
             doc.getDocumentElement().normalize();
             NodeList nodeList = doc.getElementsByTagName("user");
 
-            for(int i = 0; i < nodeList.getLength(); i++){
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                System.out.println(nodeList.item(i));
                 Node node = nodeList.item(i);
-                if(node.getNodeType() == Node.ELEMENT_NODE){
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
 
                     Element e = (Element) node;
                     users.add(new UserModel(e.getElementsByTagName("username").item(0).getTextContent(),
-                            e.getElementsByTagName("password").item(0).getTextContent() ));
+                            e.getElementsByTagName("password").item(0).getTextContent()));
                 }
             }
         } catch (Exception e) {
@@ -116,7 +179,7 @@ public class XMLProcessorService {
     }
 
     //Appends new user login credentials to the users.xml data store.
-    public static void writeNewLoginCredentials(UserModel newUserModel){
+    public static void writeNewLoginCredentials(UserModel newUserModel) {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder db = dbf.newDocumentBuilder();

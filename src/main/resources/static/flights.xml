@@ -1,2 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <flights>
+    <flight>
+        <arrival>
+            <airportCode>LAX</airportCode>
+            <city>Los Angeles</city>
+            <state>California</state>
+            <datetime>2020-02-26T15:00</datetime>
+        </arrival>
+        <departure>
+            <airportCode>SEA</airportCode>
+            <city>Seattle</city>
+            <state>WA</state>
+            <datetime>2020-02-26T11:00</datetime>
+        </departure>
+        <seats>
+            <firstClass>10</firstClass>
+            <businessClass>20</businessClass>
+        </seats>
+    </flight>
+    <flight>
+        <arrival>
+            <airportCode>SEA</airportCode>
+            <city>Seattle</city>
+            <state>WA</state>
+            <datetime>2020-02-26T15:33</datetime>
+        </arrival>
+        <departure>
+            <airportCode>STL</airportCode>
+            <city>St. Louise</city>
+            <state>MI</state>
+            <datetime>2020-02-26T10:20</datetime>
+        </departure>
+        <seats>
+            <firstClass>15</firstClass>
+            <businessClass>20</businessClass>
+        </seats>
+    </flight>
 </flights>

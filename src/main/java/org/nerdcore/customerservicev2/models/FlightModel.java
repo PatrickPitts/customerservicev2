@@ -109,4 +109,22 @@ public class FlightModel {
     public void setArrivalDate(String arrivalDate) {
         this.arrivalDate = arrivalDate;
     }
+
+    public String toString(){
+        String str ="";
+        str += "Departing:\n--------------";
+        str += "\nCity: " + departureCity;
+        str += "\nState: " + departureState;
+        str += "\nAirport Code: " + departureAirportCode;
+        str += "\nDateTime: " + departureDate;
+        str += "\n--------------\nArrival:\n--------------";
+        str += "\nCity: " + arrivalCity;
+        str += "\nState: " + arrivalState;
+        str += "\nAirport Code: " + arrivalAirportCode;
+        str += "\nDateTime: " + arrivalDate;
+        str += "\n--------------\nSeats:\n--------------";
+        str += "\nFirst Class: " + numFirstClass;
+        str += "\nBusiness Class: " + numBusinessClass;
+        return str;
+    }
 }
