@@ -27,8 +27,8 @@ public class UserModel {
         this.password = password;
     }
 
-    @Override
-    public String toString(){
-        return "Username: " + username +", Password: " +password;
+    public boolean equals(Object userModel){
+        UserModel verify = (UserModel) userModel;
+        return verify.getUsername().equals(getUsername()) && verify.getPassword().equals(getPassword());
     }
 }

@@ -37,6 +37,7 @@ public class XMLProcessorService {
 
     }
 
+    //Gets all FlightModel data from the flights.xml data store
     public static ArrayList<FlightModel> getFlights(){
 
         ArrayList<FlightModel> flights = new ArrayList<>();
@@ -52,6 +53,9 @@ public class XMLProcessorService {
                 Node flightNode = nodeList.item(i);
                 flightNode.normalize();
 
+                //TODO: Optimize index access, clean up text tags in flightNode
+                //Even numbered item indicies we simply 'text' tags that carried no information. Normalizing
+                //Did not clean these tags up, so for right now we're just using odd indices.
                 Node arrivalNode = flightNode.getChildNodes().item(1);
                 Node departureNode = flightNode.getChildNodes().item(3);
                 Node seatsNode = flightNode.getChildNodes().item(5);
@@ -67,7 +71,6 @@ public class XMLProcessorService {
                         ((Element)arrivalNode).getElementsByTagName("datetime").item(0).getTextContent(),
                         Integer.parseInt(((Element)seatsNode).getElementsByTagName("firstClass").item(0).getTextContent()),
                         Integer.parseInt(((Element)seatsNode).getElementsByTagName("businessClass").item(0).getTextContent())
-
                         ));
             }
 
@@ -77,6 +80,7 @@ public class XMLProcessorService {
         return flights;
     }
 
+    //Writes new FlightModel data to the flights.xml data store
     public static void writeNewFlight(FlightModel flightModel) {
 
         try {
@@ -162,7 +166,6 @@ public class XMLProcessorService {
             NodeList nodeList = doc.getElementsByTagName("user");
 
             for (int i = 0; i < nodeList.getLength(); i++) {
-                System.out.println(nodeList.item(i));
                 Node node = nodeList.item(i);
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
 

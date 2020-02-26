@@ -44,5 +44,12 @@ public class SourceController {
         return new ModelAndView("index");
     }
 
+    @GetMapping("/search-flights")
+    public ModelAndView getFlightSearchForm(){
+        ModelAndView mv = new ModelAndView("search-flights");
+        mv.addObject("flights", XMLProcessorService.getFlights());
+        return mv;
+    }
+
 
 }
