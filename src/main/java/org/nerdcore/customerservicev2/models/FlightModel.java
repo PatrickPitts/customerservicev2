@@ -1,7 +1,6 @@
 package org.nerdcore.customerservicev2.models;
 
-import java.util.Date;
-
+//Model used to store data associated with flights
 public class FlightModel {
 
     private String departureCity;
@@ -126,5 +125,19 @@ public class FlightModel {
         str += "\nFirst Class: " + numFirstClass;
         str += "\nBusiness Class: " + numBusinessClass;
         return str;
+    }
+
+    public boolean equals(Object obj){
+        FlightModel compareFlight = (FlightModel) obj;
+        return compareFlight.getArrivalAirportCode().equals(arrivalAirportCode) &&
+                compareFlight.getArrivalCity().equals(arrivalCity) &&
+                compareFlight.getArrivalDate().equals(arrivalDate) &&
+                compareFlight.getArrivalState().equals(arrivalState) &&
+                compareFlight.getDepartureAirportCode().equals(departureAirportCode) &&
+                compareFlight.getDepartureCity().equals(departureCity) &&
+                compareFlight.getDepartureDate().equals(departureDate) &&
+                compareFlight.getDepartureState().equals(departureState) &&
+                compareFlight.getNumBusinessClass() == numBusinessClass &&
+                compareFlight.getNumFirstClass() == numFirstClass;
     }
 }

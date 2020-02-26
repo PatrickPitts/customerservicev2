@@ -15,18 +15,21 @@ import java.util.Date;
 @RequestMapping("/site")
 public class SourceController {
 
+    //Sends users to the index page
     @RequestMapping("/index")
     public ModelAndView index(HttpServletRequest request, HttpServletResponse response){
         ModelAndView mv = new ModelAndView("index");
         return mv;
     }
 
+    //sends the client to the View used to upload new flight data
     @GetMapping("/new-flight")
     public ModelAndView newFlightView(){
         ModelAndView mv = new ModelAndView("new-flight");
         return mv;
     }
 
+    //takes the posted data from the new-flight view, adds it to the flights.xml data store, then sends the client to the index View
     @PostMapping("/new-flight")
     public ModelAndView postFlightData(@ModelAttribute("departureCity") String departureCity,
                                        @ModelAttribute("departureState") String departureState,
@@ -44,6 +47,8 @@ public class SourceController {
         return new ModelAndView("index");
     }
 
+    //Sends the client to the search-flight views
+    //TODO: Create/Implement flight search algorithm
     @GetMapping("/search-flights")
     public ModelAndView getFlightSearchForm(){
         ModelAndView mv = new ModelAndView("search-flights");

@@ -54,7 +54,7 @@ public class XMLProcessorService {
                 flightNode.normalize();
 
                 //TODO: Optimize index access, clean up text tags in flightNode
-                //Even numbered item indicies we simply 'text' tags that carried no information. Normalizing
+                //Even numbered item indices we simply 'text' tags that carried no information. Normalizing
                 //Did not clean these tags up, so for right now we're just using odd indices.
                 Node arrivalNode = flightNode.getChildNodes().item(1);
                 Node departureNode = flightNode.getChildNodes().item(3);
